@@ -2,7 +2,7 @@ import React from 'react'
 import ProfileDropDown from './ProfileDropDown'
 
 function Header() {
-  const user = ""
+  const user = "abhay"
   return (
     <div>
         <nav className="nav">
@@ -18,7 +18,7 @@ function Header() {
                     {user===""?
                     <><div> <a href="/signIn" className = "link"> Sign In </a> </div><div> <a href="/signUp" className = "link"> Sign Up </a> </div></>
                     :
-                    <ProfileDropDown/>
+                    <ProfileDropDown name={"Abhay"}/>
                     
                     }
                     
