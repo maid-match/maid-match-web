@@ -1,13 +1,11 @@
 import React from 'react'
 
-function DropDownItem(props) {
+function DropDownItem({ icon, text }) {
   return (
-
-    <li className="dropDownItem">
-        {props.img}
-        <a>{props.text}</a>
+    <li className="dropdown-item">
+      <i className={icon}></i>
+      <a>{text}</a>
     </li>
-
   )
 }
 
