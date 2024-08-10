@@ -2,9 +2,18 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
 import DropDownItem from './dropdownitem';
 
+<style>
+  {`
+    .link:hover, .link.active {
+      border-bottom: 2px solid #8c52ff;
+    }
+  `}
+</style>
+
 interface ProfileDropDownProps {
   name: string;
 }
+
 
 const ProfileDropDown: React.FC<ProfileDropDownProps> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +38,7 @@ const ProfileDropDown: React.FC<ProfileDropDownProps> = (props) => {
 
   return (
     <div className="menu-container">
-      <div className="menu-trigger link" onClick={toggleDropdown}>
+      <div className="menu-trigger link no-underline font-medium text-lg text-[#8c52ff] pb-[1px]" onClick={toggleDropdown}>
         <p>Hello, {props.name}</p>
       </div>
       
