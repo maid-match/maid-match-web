@@ -12,6 +12,7 @@ import DropDownItem from './dropdownitem';
 
 interface ProfileDropDownProps {
   name: string;
+  
 }
 
 
