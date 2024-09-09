@@ -20,6 +20,11 @@ app.get('/users',async(req,res)=>{
     const users = await db.getUsers()
     res.send(users)
 })
+app.post('/checkusersemail',async(req,res)=>{
+    const {email,password} = req.body
+    const resp = await db.checkUserByEmail(email,password)
+    res.send(resp)
+})
 app.get('/users/:user',async(req,res)=>{
     const{user} = req.params
     const users = await db.getUsers()
@@ -52,11 +57,26 @@ app.post('/maids',async(req,res)=>{
     res.send(success)
 })
 
-app.post('/users',async(req,res)=>{
-    const {fname,lname,location,email,password} = req.body
-    const {insertId} = await db.addUser(fname,lname,location,email,password)
-    res.send(`${insertId}`)
-})
+app.post('/users', async (req, res) => {
+    try {
+        const { username, fname, lname, location, email, password } = req.body;
+        
+        if (!username || !fname || !lname || !location || !email || !password) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        const result = await db.addUser(username, fname, lname, location, email, password);
+        
+        if (result.success) {
+            res.status(201).json({ message: result.message, userId: result.userId });
+        } else {
+            res.status(400).json({ error: result.message });
+        }
+    } catch (error) {
+        console.error('Error in user registration:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 app.post('/reviews',async(req,res)=>{
     const {maid,user,text,rating} = req.body
