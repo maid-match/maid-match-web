@@ -32,23 +32,7 @@ export async function getUser(name){
     console.log("User:",result)
     return result
 }
-export async function checkUserByEmail(email,passwordGiven){
-    try {
-        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-        
-        if (rows.length === 0) {
-            return false; // No user found with this email
-        }
 
-        const user = rows[0];
-        const passwordMatch = await bcrypt.compare(passwordGiven, user.password);
-        
-        return passwordMatch;
-    } catch (error) {
-        console.error("Error checking user credentials:", error);
-        throw error;
-    }
-}
 
 export async function getUsers(){
     const [result] = await pool.query('select * from users')

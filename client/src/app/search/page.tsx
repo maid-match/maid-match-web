@@ -1,5 +1,6 @@
 import Navbar from '@/app/components/navbar';
 import React from 'react';
+import MaidDisplay from '../components/maiddisplay';
 
 
 const Search: React.FC = () => {
@@ -22,6 +23,7 @@ const Search: React.FC = () => {
             />
           </div>
         </div>
+        <MaidDisplay searchTerm=''></MaidDisplay>
       </div>
     </div>
   );
