@@ -1,17 +1,42 @@
 import express from "express";
 import * as db from "./database.js"
+import cors from "cors"
 const app = express()
 
 
 const port = 8080
 
 app.use(express.json())
+app.use(cors({origin:'http://localhost:3000'}))
+app.post('/maids',async(req,res)=>{
+    const {fname,lname,location,number,email,pf,pp,ps} = req.body
+    const success = await db.addMaid(fname,lname,location,number,email,pf,pp,ps)
+    res.send(success)
+})
 
 app.get('/maids',async(req,res)=>{
     const maids = await db.getMaids()
     res.send(maids)
 })
-app.get('/maids/:maid',async(req,res)=>{
+app.get('/maids/:searchT',async(req,res)=>{
+    const {searchT} = req.params
+    console.log("searchT:",searchT)
+    const maids = await db.getMaids()
+    let toRet = []
+    for (const maid of maids){
+        for (const key of Object.keys(maid)){
+            if(key=="phone_number"){
+                continue
+            }
+            if (maid[key].toString().toLowerCase().includes(searchT)){
+                toRet.push(maid)
+                break
+            }
+        }
+    }
+    res.send(toRet)
+})
+app.get('/maids/one/:maid',async(req,res)=>{
     const {maid} = req.params
     const maid_ = await db.getMaid(maid)
     res.send(maid_)
@@ -51,11 +76,7 @@ app.get('/review/maid',async(req,res)=>{
     res.send(reviews)
 })
 
-app.post('/maids',async(req,res)=>{
-    const {fname,lname,location,number,email,pf,pp,ps} = req.body
-    const success = await db.addMaid(fname,lname,location,number,email,pf,pp,ps)
-    res.send(success)
-})
+
 
 app.post('/users', async (req, res) => {
     try {

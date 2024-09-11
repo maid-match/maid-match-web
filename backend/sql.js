@@ -1,5 +1,6 @@
 import mysql2 from "mysql2/promise";
-
+import dotenv from "dotenv"
+dotenv.config()
 const pool = mysql2.createPool({
     host: process.env.MYSQL_HOST || '127.0.0.1',
     user: process.env.MYSQL_USER || 'root',
@@ -72,11 +73,11 @@ export async function createAllTables() {
     console.log("All tables created successfully");
 }
 
-//createAllTables();
+createAllTables();
 
 export async function testT() {
     const [result] = await pool.query('select * from users')
     console.log(result);
     
 }
-testT();
+//testT();

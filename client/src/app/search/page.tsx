@@ -1,9 +1,11 @@
+'use client'
 import Navbar from '@/app/components/navbar';
 import React from 'react';
 import MaidDisplay from '../components/maiddisplay';
-
+import { useState } from 'react';
 
 const Search: React.FC = () => {
+  const [searchT,setSearchT] = useState("")
   return (
     
     <div>
@@ -16,6 +18,7 @@ const Search: React.FC = () => {
           </div>
           <div className="search-bar">
             <input 
+            onChange={(e)=>{setSearchT(e.target.value)}}
               type="text" 
               name="Search" 
               id="search-bar" 
@@ -23,7 +26,7 @@ const Search: React.FC = () => {
             />
           </div>
         </div>
-        <MaidDisplay searchTerm=''></MaidDisplay>
+        <MaidDisplay searchTerm={searchT}></MaidDisplay>
       </div>
     </div>
   );
