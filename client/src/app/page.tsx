@@ -10,6 +10,8 @@ export default function Home() {
     <MaidProfile
     first_name= "Kwame"
     last_name="Bol"
+    number= "8787878787"
+    email= "ilovefufu@gmail.com"
     pfp="/maid_imgs/kwame.jpg"
     city="Akra, Ghana"
     reviews= "1/5"
@@ -17,6 +19,7 @@ export default function Home() {
     prices = {["90", "160"]}
     review_string_list = {["great", "wonderful"]}
     reviewer_list = {["bob", "joe"]}
+    
     
     />
   );
