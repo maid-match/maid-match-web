@@ -8,6 +8,9 @@ const port = 8080
 
 app.use(express.json())
 app.use(cors({origin:'http://localhost:3000'}))
+
+//maids
+
 app.post('/maids',async(req,res)=>{
     const {fname,lname,location,number,email,pf,pp,ps} = req.body
     const success = await db.addMaid(fname,lname,location,number,email,pf,pp,ps)
@@ -41,6 +44,11 @@ app.get('/maids/one/:maid',async(req,res)=>{
     const maid_ = await db.getMaid(maid)
     res.send(maid_)
 })
+
+
+
+//users
+
 app.get('/users',async(req,res)=>{
     const users = await db.getUsers()
     res.send(users)
@@ -52,32 +60,9 @@ app.post('/checkusersemail',async(req,res)=>{
 })
 app.get('/users/:user',async(req,res)=>{
     const{user} = req.params
-    const users = await db.getUsers()
+    const users = await db.getUser(user)
     res.send(users)
 })
-app.get('/prices',async(req,res)=>{
-    const prices = await db.getPrices()
-    res.send(prices)
-})
-app.get('/price/maid',async(req,res)=>{
-    const {maid} = req.params
-    const price = await db.getPrice(maid)
-    res.send(price)
-})
-
-app.get('/reviews',async(req,res)=>{
-    const reviews = await db.getReviews()
-    res.send(reviews)
-})
-
-app.get('/review/maid',async(req,res)=>{
-    const {maid} = req.params
-    const reviews = await db.getMaidReviews(maid)
-    res.send(reviews)
-})
-
-
-
 app.post('/users', async (req, res) => {
     try {
         const { username, fname, lname, location, email, password } = req.body;
@@ -99,11 +84,40 @@ app.post('/users', async (req, res) => {
     }
 });
 
+
+
+
+//prices
+app.get('/prices',async(req,res)=>{
+    const prices = await db.getPrices()
+    res.send(prices)
+})
+app.get('/price/maid',async(req,res)=>{
+    const {maid} = req.params
+    const price = await db.getPrice(maid)
+    res.send(price)
+})
+
+
+
+
+//reviews
 app.post('/reviews',async(req,res)=>{
-    const {maid,user,text,rating} = req.body
-    const {insertId} = await db.addReview(maid,user,text,rating)
+    const {maid_id,user_id,rating,text} = req.body
+    const {insertId} = await db.addReview(maid_id,user_id,rating,text)
     const [review] = await db.getReview(insertId)
     res.send(review)
+})
+
+app.get('/reviews',async(req,res)=>{
+    const reviews = await db.getReviews()
+    res.send(reviews)
+})
+
+app.get('/review/maid',async(req,res)=>{
+    const {maid} = req.params
+    const reviews = await db.getMaidReviews(maid)
+    res.send(reviews)
 })
 
 

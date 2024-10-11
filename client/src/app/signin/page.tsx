@@ -10,7 +10,11 @@ const SignIn: FC = () => {
   const handleLogin = async(e:Event)=>{
     e.preventDefault()
     const {data} = await axios.post("/api/checkuseremail",{email,password})
+    console.log(data)
     if (data.success){alert(data.message)}
+    else{
+      alert("Wrong email or password")
+    }
   }
   return (
     <div>
@@ -48,7 +52,7 @@ const SignIn: FC = () => {
             </div>
 
             <div className="btn">
-              <button role="button" className="form-sbmt-btn" type="submit">
+              <button role="button" onClick={handleLogin} className="form-sbmt-btn" type="submit">
                 Login
               </button>
             </div>

@@ -118,12 +118,9 @@ export async function getMaidReviews(maid){
     const [result] = await pool.query('select * from reviews inner join maids on reviews.maid_id = maids.id inner join users on reviews.user_id = users.id where maids.fname = ?',[maid])
     return result
 }
-export async function addReview(maid,user,text,rating){
-    const [md] = await getMaid(maid)
-    const maidId = md.id
-    const [usr] = await getUser(user)
-    const userId = usr.id
-    const [result] = await pool.query('insert into reviews (maid_id,rating,text,user_id) values (?,?,?,?)',[maidId,rating,text,userId])
+export async function addReview(maidId,userId,text,rating){
+    
+    const [result] = await pool.query('insert into reviews (maid_id,user_id,rating,text) values (?,?,?,?)',[maidId,userId,rating,text])
     return result
 
 }

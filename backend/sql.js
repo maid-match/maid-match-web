@@ -65,19 +65,49 @@ export async function createPricesTable() {
     }
 }
 
+export async function createReviewsTable() {
+    try {
+        const [result] = await pool.query(`
+            CREATE TABLE IF NOT EXISTS reviews (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                maid_id INT,
+                user_id INT,
+                reviewno INT,
+                reviewtxt VARCHAR(1000),
+                FOREIGN KEY (maid_id) REFERENCES maids(id),
+                FOREIGN KEY (user_id) REFERENCES USERS(id)
+            )
+        `);
+        console.log("Reviews table created successfully:", result);
+    } catch (error) {
+        console.error("Error creating prices table:", error);
+    }
+}
+
 // Function to create all tables
 export async function createAllTables() {
     await createUsersTable();
     await createMaidsTable();
     await createPricesTable();
+
+    await createReviewsTable();
     console.log("All tables created successfully");
 }
 
-createAllTables();
+//createAllTables();
+export async function dropTable(table){
+    try {
+        const [result] = await pool.query(`DROP TABLE ${table}`);
+        console.log("Table dropped successfully", result);
+    } catch (error) {
+        console.error("Error dropping table:", error);
+    }
+}
 
 export async function testT() {
-    const [result] = await pool.query('select * from users')
+    const [result] = await pool.query('select * from reviews')
     console.log(result);
     
 }
-//testT();
+testT();
+//dropTable("reviews")
