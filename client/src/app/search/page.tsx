@@ -10,12 +10,14 @@ const Search: React.FC = () => {
     
     <div>
         <Navbar/>
-      <div className="wrapper">
+      <div className="flex flex-col justify-center overflow-y-auto-auto ">
         {/* Search */}
         <div className="search">
+          
           <div className="search-head">
             <p>Search for Maids Near You!</p>
           </div>
+
           <div className="search-bar">
             <input 
             onChange={(e)=>{setSearchT(e.target.value)}}
@@ -25,8 +27,13 @@ const Search: React.FC = () => {
               placeholder="Search by name or zip code" 
             />
           </div>
+
         </div>
-        <MaidDisplay searchTerm={searchT}></MaidDisplay>
+
+        <div className="flex flex-col justify-center items-center w-100">
+          <MaidDisplay searchTerm={searchT}></MaidDisplay>
+        </div>
+          
       </div>
     </div>
   );
