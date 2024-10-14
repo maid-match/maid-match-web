@@ -3,6 +3,7 @@ import Navbar from '@/app/components/navbar';
 import React from 'react';
 import MaidDisplay from '../components/maiddisplay';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const Search: React.FC = () => {
   const [searchT,setSearchT] = useState("")
@@ -29,11 +30,9 @@ const Search: React.FC = () => {
           </div>
 
         </div>
-
         <div className="flex flex-col justify-center items-center w-100">
           <MaidDisplay searchTerm={searchT}></MaidDisplay>
         </div>
-          
       </div>
     </div>
   );

@@ -52,7 +52,7 @@ const SignIn: FC = () => {
             </div>
 
             <div className="btn">
-              <button role="button" onClick={handleLogin} className="form-sbmt-btn" type="submit">
+              <button role="button"  className="form-sbmt-btn" type="submit">
                 Login
               </button>
             </div>

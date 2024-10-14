@@ -1,6 +1,7 @@
 "use client";
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 interface MaidDisplayProps {
   searchTerm: string;
@@ -21,8 +22,6 @@ function MaidDisplay({ searchTerm }: MaidDisplayProps) {
     baseURL: 'http://localhost:8080', 
   });
 
-  const services = ["House Cleaning", "Wet Vacuum"];
-  const prices = ["100", "50"];
   const [maids, setMaids] = useState<Maid[]>([]);
 
   useEffect(() => {
@@ -42,38 +41,52 @@ function MaidDisplay({ searchTerm }: MaidDisplayProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {maids.map((maid: Maid, index) => (
-            <button
-              key={index}
-              className="border border-gray-300 rounded-lg p-4 bg-white shadow-md transition-transform transform hover:scale-105 hover:shadow-xl duration-300 ease-in-out"
+            <Link 
+              key={index} 
+              href={{
+                pathname: '/maidprofile',
+                query: { 
+                  id: maid.id,
+                  fname: maid.fname,
+                  lname: maid.lname,
+                  location: maid.location,
+                  phone_number: maid.phone_number,
+                  email: maid.email
+                }
+              }}
             >
-              <div className="flex justify-center mb-4">
-                <img
-                  src="./maid_imgs/kwame.jpg"
-                  alt={`${maid.fname} ${maid.lname}`}
-                  className="w-24 h-24 rounded-full object-cover"
-                />
-              </div>
+              <button
+                className="border border-gray-300 rounded-lg p-4 bg-white shadow-md transition-transform transform hover:scale-105 hover:shadow-xl duration-300 ease-in-out"
+              >
+                <div className="flex justify-center mb-4">
+                  <img
+                    src="./maid_imgs/kwame.jpg"
+                    alt={`${maid.fname} ${maid.lname}`}
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
+                </div>
 
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  {maid.fname} {maid.lname}
-                </h2>
-                <p className="text-gray-600">{maid.location}</p>
-              </div>
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                    {maid.fname} {maid.lname}
+                  </h2>
+                  <p className="text-gray-600">{maid.location}</p>
+                </div>
 
-              <hr className="my-4" />
+                <hr className="my-4" />
 
-              <div className="space-y-4">
-                {services.map((service, index) => (
-                  <div key={index} className="flex justify-between items-center">
-                    <h3 className="font-semibold text-gray-700">{service}</h3>
-                    <p className="text-xl font-bold text-[#8c52ff]">
-                      ${prices[index]}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </button>
+                <div className="space-y-4">
+                  {/* {maid.services.map((service, index) => (
+                    <div key={index} className="flex justify-between items-center">
+                      <h3 className="font-semibold text-gray-700">{service}</h3>
+                      <p className="text-xl font-bold text-[#8c52ff]">
+                        ${maid.prices[index]}
+                      </p>
+                    </div>
+                  ))} */}
+                </div>
+              </button>
+            </Link>
           ))}
         </div>
       )}
