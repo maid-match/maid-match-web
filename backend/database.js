@@ -111,7 +111,7 @@ export async function getReviews(){
     return result
 }
 export async function getReview(id){
-    const [result] = await pool.query('select * from reviews where review_id=?',[id])
+    const [result] = await pool.query('select * from reviews where id=?',[id])
     return result
 }
 export async function getMaidReviews(maid){
@@ -120,7 +120,7 @@ export async function getMaidReviews(maid){
 }
 export async function addReview(maidId,userId,text,rating){
     
-    const [result] = await pool.query('insert into reviews (maid_id,user_id,rating,text) values (?,?,?,?)',[maidId,userId,rating,text])
+    const [result] = await pool.query('insert into reviews (maid_id,user_id,reviewno,reviewtxt) values (?,?,?,?)',[maidId,userId,text,rating])
     return result
 
 }

@@ -3,23 +3,29 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/navbar';
 import { useSearchParams } from 'next/navigation';
+import axios from 'axios';
+
 interface MaidProfileProps {
-    first_name: string;
-    last_name: string;
-    number: string;
-    email: string;
-    pfp: string;
-    city: string;
-    reviews: string;
-    services: string[];
-    prices: string[];
-    review_string_list: string[];
-    reviewer_list: string[];
+  first_name: string;
+  last_name: string;
+  number: string;
+  email: string;
+  pfp: string;
+  city: string;
+  reviews: string;
+  services: string[];
+  prices: string[];
+  review_string_list: string[];
+  reviewer_list: string[];
 }
 
 const MaidProfile: React.FC = () => {
   const searchParams = useSearchParams();
-  
+  //REPLACE
+  const user_id = 1;
+  //REPLACE
+
+  const id = searchParams.get('id');
   const fname = searchParams.get('fname');
   const lname = searchParams.get('lname');
   const phone_number = searchParams.get('phone_number');
@@ -27,6 +33,8 @@ const MaidProfile: React.FC = () => {
   const location = searchParams.get('location');
 
   const [showContactBox, setShowContactBox] = useState(false);
+  const [reviewText, setReviewText] = useState('');
+  const [starRating, setStarRating] = useState(5);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -41,6 +49,14 @@ const MaidProfile: React.FC = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [showContactBox]);
+
+  const submitReview = async() => {
+    // Function to handle review submission (to be implemented)
+    console.log(`Review Text: ${reviewText}, Star Rating: ${starRating}`);
+    const d = {"maid_id":id,"user_id":user_id,"rating":starRating,"text":reviewText}
+    const res = await axios.post('/api/reviews',d)
+    console.log(res);
+  };
 
   return (
     <>
@@ -66,7 +82,53 @@ const MaidProfile: React.FC = () => {
             </div>
           </section>
 
-          {/* Additional sections */}
+          {/* Review form section */}
+          <section className="mb-8">
+            <h2 className="text-2xl font-bold mb-4">Leave a Review</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                submitReview();
+              }}
+              className="flex flex-col space-y-4"
+            >
+              <label htmlFor="reviewText" className="text-lg font-semibold">
+                Your Review:
+              </label>
+              <textarea
+                id="reviewText"
+                rows={4}
+                value={reviewText}
+                onChange={(e) => setReviewText(e.target.value)}
+                className="border rounded-lg p-2"
+                placeholder="Write your review here"
+              ></textarea>
+
+              <label htmlFor="starRating" className="text-lg font-semibold">
+                Star Rating:
+              </label>
+              <select
+                id="starRating"
+                value={starRating}
+                onChange={(e) => setStarRating(Number(e.target.value))}
+                className="border rounded-lg p-2"
+              >
+                {[5, 4, 3, 2, 1].map((star) => (
+                  <option key={star} value={star}>
+                    {star} Star{star > 1 ? 's' : ''}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                type="submit"
+                className="bg-[#8c52ff] text-white px-6 py-2 rounded-full mt-4"
+              >
+                Submit Review
+              </button>
+            </form>
+          </section>
+
         </div>
 
         {showContactBox ? (

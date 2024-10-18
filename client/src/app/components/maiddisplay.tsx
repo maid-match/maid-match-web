@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-
+import axiosInstance from '../axiosInstance';
 interface MaidDisplayProps {
   searchTerm: string;
 }
@@ -18,9 +18,6 @@ interface Maid {
 }
 
 function MaidDisplay({ searchTerm }: MaidDisplayProps) {
-  const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080', 
-  });
 
   const [maids, setMaids] = useState<Maid[]>([]);
 

@@ -92,7 +92,7 @@ app.get('/prices',async(req,res)=>{
     const prices = await db.getPrices()
     res.send(prices)
 })
-app.get('/price/maid',async(req,res)=>{
+app.get('/price/:maid',async(req,res)=>{
     const {maid} = req.params
     const price = await db.getPrice(maid)
     res.send(price)
@@ -114,7 +114,7 @@ app.get('/reviews',async(req,res)=>{
     res.send(reviews)
 })
 
-app.get('/review/maid',async(req,res)=>{
+app.get('/review/:maid',async(req,res)=>{
     const {maid} = req.params
     const reviews = await db.getMaidReviews(maid)
     res.send(reviews)

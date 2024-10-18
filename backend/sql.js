@@ -28,6 +28,17 @@ export async function createUsersTable() {
         console.error("Error creating users table:", error);
     }
 }
+export async function addUser(){
+    try {
+        const [result] = await pool.query(`
+            insert into USERS (username,fname,lname,location,email,password) values (?,?,?,?,?,?)
+        `,["akshaym08","akshay","murthy","Plano, TX","akshaymurthy08@gmail.com","passsecret"]);
+        console.log("Users table created successfully:", result);
+    } catch (error) {
+        console.error("Error creating users table:", error);
+    }
+}
+addUser()
 
 export async function createMaidsTable() {
     try {
