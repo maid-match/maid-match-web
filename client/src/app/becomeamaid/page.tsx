@@ -22,7 +22,15 @@ const BecomeAMaid: FC = () => {
     e.preventDefault();
     
     try {
+      
+
+      
+      const {data} = await axios.post('/api/users',{fname,lname,location,email,password})
+      console.log(data)
+      const {user_id} = data
+
       const response = await axios.post('/api/maids', {
+        user_id,
         fname,
         lname,
         location,
@@ -32,8 +40,7 @@ const BecomeAMaid: FC = () => {
         pp: pricePartial,  // Price Partial
         ps: priceSingle,   // Price Single
       });
-
-      console.log(response.data);
+      console.log(response)
       // Handle success (e.g., redirect, show success message)
     } catch (error) {
       console.error('Error signing up:', error);

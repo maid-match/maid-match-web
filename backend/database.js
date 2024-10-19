@@ -22,8 +22,8 @@ export async function getMaid(name){
     return result
 }
 
-export async function addMaid(fname,lname,location,number,email,price_fullhouse,price_partial,price_specific){
-    const [{insertId}] = await pool.query('insert into maids(fname,lname,location,phone_number,email) values (?,?,?,?,?)',[fname,lname,location,number,email])
+export async function addMaid(user_id,fname,lname,location,number,email,price_fullhouse,price_partial,price_specific){
+    const [{insertId}] = await pool.query('insert into maids(user_id,fname,lname,location,phone_number,email) values (?,?,?,?,?,?)',[user_id,fname,lname,location,number,email])
     const [result] = await pool.query('insert into prices(maid_id,price_fullhouse,price_partial,price_specific) values (?,?,?,?)',[insertId,price_fullhouse,price_partial,price_specific])
     return "Inserted Maid"
 }
@@ -41,29 +41,26 @@ export async function getUsers(){
     return result
 }
 
-export async function addUser(username, fname, lname, location, email, password) {
+export async function addUser(fname, lname, location, email, password) {
     try {
-        // Check if a user with the same username or email already exists
+        // Check if a user with email already exists
         const [existingUsers] = await pool.query(
-            'SELECT * FROM users WHERE username = ? OR email = ?',
-            [username, email]
+            'SELECT * FROM users WHERE email = ?',
+            [email]
         );
 
         if (existingUsers.length > 0) {
             const existingUser = existingUsers[0];
-            if (existingUser.username === username) {
-                return { success: false, message: "Username already exists" };
-            } else {
                 return { success: false, message: "Email already exists" };
-            }
+
         }
 
         // If no existing user, proceed with user creation
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const [result] = await pool.query(
-            'INSERT INTO users (username, fname, lname, location, email, password) VALUES (?, ?, ?, ?, ?, ?)',
-            [username, fname, lname, location, email, hashedPassword]
+            'INSERT INTO users (fname, lname, location, email, password) VALUES (?, ?, ?, ?, ?)',
+            [fname, lname, location, email, hashedPassword]
         );
 
         return { success: true, message: "User added successfully", userId: result.insertId };
@@ -124,3 +121,5 @@ export async function addReview(maidId,userId,text,rating){
     return result
 
 }
+
+console.log(getUsers())

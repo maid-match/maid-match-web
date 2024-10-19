@@ -12,9 +12,8 @@ const pool = mysql2.createPool({
 export async function createUsersTable() {
     try {
         const [result] = await pool.query(`
-            CREATE TABLE IF NOT EXISTS USERS (
+            CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                username VARCHAR(255),
                 fname VARCHAR(255),
                 lname VARCHAR(255),
                 location VARCHAR(255),
@@ -31,25 +30,41 @@ export async function createUsersTable() {
 export async function addUser(){
     try {
         const [result] = await pool.query(`
-            insert into USERS (username,fname,lname,location,email,password) values (?,?,?,?,?,?)
+            insert into users
+             (username,fname,lname,location,email,password) values (?,?,?,?,?,?)
         `,["akshaym08","akshay","murthy","Plano, TX","akshaymurthy08@gmail.com","passsecret"]);
         console.log("Users table created successfully:", result);
     } catch (error) {
         console.error("Error creating users table:", error);
     }
 }
-addUser()
+//addUser()
+
+
+
+
+export async function task(){
+    const [result] = await pool.query('DROP TABLE users')
+    console.log(result)
+}
+//task()
+
+
+
 
 export async function createMaidsTable() {
     try {
         const [result] = await pool.query(`
             CREATE TABLE IF NOT EXISTS maids (
                 id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
                 fname VARCHAR(255),
                 lname VARCHAR(255),
                 location VARCHAR(255),
                 phone_number VARCHAR(20),
-                email VARCHAR(255)
+                email VARCHAR(255),
+
+                FOREIGN KEY (user_id) REFERENCES users(id)
             )
         `);
         console.log("Maids table created successfully:", result);
@@ -86,7 +101,7 @@ export async function createReviewsTable() {
                 reviewno INT,
                 reviewtxt VARCHAR(1000),
                 FOREIGN KEY (maid_id) REFERENCES maids(id),
-                FOREIGN KEY (user_id) REFERENCES USERS(id)
+                FOREIGN KEY (user_id) REFERENCES users(id)
             )
         `);
         console.log("Reviews table created successfully:", result);
@@ -106,6 +121,7 @@ export async function createAllTables() {
 }
 
 //createAllTables();
+
 export async function dropTable(table){
     try {
         const [result] = await pool.query(`DROP TABLE ${table}`);
@@ -114,11 +130,11 @@ export async function dropTable(table){
         console.error("Error dropping table:", error);
     }
 }
+//dropTable("users");
 
 export async function testT() {
-    const [result] = await pool.query('select * from reviews')
+    const [result] = await pool.query('select * from users')
     console.log(result);
     
 }
 testT();
-//dropTable("reviews")

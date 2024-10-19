@@ -12,8 +12,8 @@ app.use(cors({origin:'http://localhost:3000'}))
 //maids
 
 app.post('/maids',async(req,res)=>{
-    const {fname,lname,location,number,email,pf,pp,ps} = req.body
-    const success = await db.addMaid(fname,lname,location,number,email,pf,pp,ps)
+    const {user_id,fname,lname,location,number,email,pf,pp,ps} = req.body
+    const success = await db.addMaid(user_id,fname,lname,location,number,email,pf,pp,ps)
     res.send(success)
 })
 
@@ -65,16 +65,16 @@ app.get('/users/:user',async(req,res)=>{
 })
 app.post('/users', async (req, res) => {
     try {
-        const { username, fname, lname, location, email, password } = req.body;
+        const { fname, lname, location, email, password } = req.body;
         
-        if (!username || !fname || !lname || !location || !email || !password) {
+        if (!fname || !lname || !location || !email || !password) {
             return res.status(400).json({ error: 'All fields are required' });
         }
 
-        const result = await db.addUser(username, fname, lname, location, email, password);
+        const result = await db.addUser(fname, lname, location, email, password);
         
         if (result.success) {
-            res.status(201).json({ message: result.message, userId: result.userId });
+            res.status(201).json({ message: result.message, user_id: result.userId });
         } else {
             res.status(400).json({ error: result.message });
         }
