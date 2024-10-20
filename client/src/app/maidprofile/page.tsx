@@ -2,8 +2,9 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/navbar';
-import { useSearchParams } from 'next/navigation';
+import { redirect, useSearchParams } from 'next/navigation';
 import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
 
 interface MaidProfileProps {
   first_name: string;
@@ -22,7 +23,10 @@ interface MaidProfileProps {
 const MaidProfile: React.FC = () => {
   const searchParams = useSearchParams();
   //REPLACE
-  const user_id = 1;
+  const {user} = useAuth();
+  if (user==null){
+    redirect('/signin')
+  }
   //REPLACE
 
   const id = searchParams.get('id');
@@ -53,7 +57,7 @@ const MaidProfile: React.FC = () => {
   const submitReview = async() => {
     // Function to handle review submission (to be implemented)
     console.log(`Review Text: ${reviewText}, Star Rating: ${starRating}`);
-    const d = {"maid_id":id,"user_id":user_id,"rating":starRating,"text":reviewText}
+    const d = {"maid_id":id,"user_id":user.id,"rating":starRating,"text":reviewText}
     const res = await axios.post('/api/reviews',d)
     console.log(res);
   };

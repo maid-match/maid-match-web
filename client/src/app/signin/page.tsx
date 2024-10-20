@@ -2,26 +2,28 @@
 import React, { FC, useState } from 'react';
 import Navbar from '../components/navbar';
 import axios from 'axios'
-
+import { useAuth } from '../contexts/AuthContext';
+import { redirect } from 'next/navigation';
 const SignIn: FC = () => {
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
+  const {login,user} = useAuth()
 
-  const handleLogin = async(e:Event)=>{
+  const handleLogin = async(e:React.FormEvent)=>{
     e.preventDefault()
-    const {data} = await axios.post("/api/checkuseremail",{email,password})
-    console.log(data)
-    if (data.success){alert(data.message)}
-    else{
-      alert("Wrong email or password")
-    }
+    console.log(user)
+    await login(email,password)
+    console.log(user)
+
+    
+
   }
   return (
     <div>
       <Navbar/>
       <div className="wrapper">
         {/* Form */}
-        <form  className="form" action="#" method="POST">
+        <form  onSubmit = {handleLogin} className="form" action="#" method="POST">
           <fieldset className="fldt">
             <div className="form-header">
               <h2>Sign In to MaidMatch</h2>

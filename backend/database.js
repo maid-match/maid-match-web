@@ -29,8 +29,8 @@ export async function addMaid(user_id,fname,lname,location,number,email,price_fu
 }
 //addMaid("a","b","test","test","test","test","test")
 
-export async function getUser(name){
-    const [result] = await pool.query('select * from users where fname = ?',[name])
+export async function getUser(id){
+    const [result] = await pool.query('select * from users where id = ?',[id])
     console.log("User:",result)
     return result
 }
