@@ -132,8 +132,17 @@ export async function dropTable(table){
 }
 //dropTable("users");
 
+export async function truncTable(table){
+    try {
+        const[result] = await pool.query(`DELETE FROM ${table}`);
+        console.log(`Table ${table} emptied successfully`,result);
+    } catch (error) {
+        console.log("Error deleting rows from table:", error);
+    }
+}
+//truncTable("users")
 export async function testT() {
-    const [result] = await pool.query('select * from users')
+    const [result] = await pool.query('select * from prices')
     console.log(result);
     
 }

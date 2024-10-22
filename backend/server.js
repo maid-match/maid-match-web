@@ -21,24 +21,25 @@ app.get('/maids',async(req,res)=>{
     const maids = await db.getMaids()
     res.send(maids)
 })
-app.get('/maids/:searchT',async(req,res)=>{
-    const {searchT} = req.params
-    console.log("searchT:",searchT)
-    const maids = await db.getMaids()
-    let toRet = []
-    for (const maid of maids){
-        for (const key of Object.keys(maid)){
-            if(key=="phone_number"){
-                continue
+app.get('/maids/:searchT', async (req, res) => {
+    const { searchT } = req.params;
+    console.log("searchT:", searchT);
+    const maids = await db.getMaids();
+    let toRet = [];
+    for (const maid of maids) {
+        for (const key of Object.keys(maid)) {
+            if (key === "phone_number") {
+                continue;
             }
-            if (maid[key].toString().toLowerCase().includes(searchT)){
-                toRet.push(maid)
-                break
+            if (maid[key] && maid[key].toString().toLowerCase().includes(searchT.toLowerCase())) {
+                toRet.push(maid);
+                break;
             }
         }
     }
-    res.send(toRet)
-})
+    res.send(toRet);
+});
+
 app.get('/maids/one/:maid',async(req,res)=>{
     const {maid} = req.params
     const maid_ = await db.getMaid(maid)
@@ -168,9 +169,9 @@ app.get('/prices',async(req,res)=>{
     const prices = await db.getPrices()
     res.send(prices)
 })
-app.get('/price/:maid',async(req,res)=>{
-    const {maid} = req.params
-    const price = await db.getPrice(maid)
+app.get('/price/:id',async(req,res)=>{
+    const {id} = req.params
+    const price = await db.getPrice(id)
     res.send(price)
 })
 

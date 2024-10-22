@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
         router.push('/search'); // Use router.push for client-side navigation
       } else {
-        throw new Error(data.message || "Login failed");
+        alert("Wrong email or password")
       }
     } catch (error) {
       throw error;
@@ -66,6 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', data.token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+        router.push('/search')
       } else {
         throw new Error(data.message || "Signup failed");
       }

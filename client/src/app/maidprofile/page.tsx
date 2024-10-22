@@ -28,6 +28,8 @@ const MaidProfile: React.FC = () => {
   const email = searchParams.get('email');
   const location = searchParams.get('location');
 
+  
+
   const [showContactBox, setShowContactBox] = useState(false);
   const [reviewText, setReviewText] = useState('');
   const [starRating, setStarRating] = useState(5);
@@ -35,12 +37,15 @@ const MaidProfile: React.FC = () => {
   const [loadingReviews, setLoadingReviews] = useState(true); // Loading state for reviews
   const [error, setError] = useState(''); // Error state
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [pf,setPf] = useState("")
+  const [pp,setPp] = useState("")
+  const[ps,setPs] = useState("")
+
 
   // Fetch reviews when the component loads or reloads
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        // Ensure id is available before making the request
         if (!id) {
           console.log('Maid ID is missing');
           return;
@@ -51,25 +56,43 @@ const MaidProfile: React.FC = () => {
         
         const res = await axios.get(`/api/review/${id}`);
         console.log('Fetched reviews:', res.data);
-        let reviews_n:Review[] = []
+        let reviews_n: Review[] = []
         for (const r of res.data){
-          const {data} = await axios.get(`/api/users/${r.user_id}`)
-          const user_name = data[0].fname+" "+data[0].lname
-          const rating = r.reviewno
-          const text = r.reviewtxt
-          reviews_n.push({user_name,rating,text})
+          const { data } = await axios.get(`/api/users/${r.user_id}`);
+          const user_name = data[0].fname + " " + data[0].lname;
+          const rating = r.reviewno;
+          const text = r.reviewtxt;
+          reviews_n.push({ user_name, rating, text });
         }
-        setReviews(reviews_n); // Store fetched reviews in state
+        setReviews(reviews_n);
         setLoadingReviews(false);
+
+        
+
       } catch (err) {
         console.error('Failed to load reviews:', err);
         setError('Failed to load reviews');
         setLoadingReviews(false);
       }
+      try{
+        const{data} = await axios.get(`/api/price/${id}`)
+        const d=data[0]
+        console.log(data)
+        const {price_fullhouse,price_partial,price_specific} = d
+        setPf(price_fullhouse)
+        setPp(price_partial)
+        setPs(price_specific)
+      }
+      catch(err){
+        console.error('Failed to load prices:', err);
+        setError('Failed to load prices');
+      }
+
+
     };
 
     if (id) {
-      fetchReviews(); // Fetch reviews when page loads
+      fetchReviews();
     } else {
       console.log('No maid ID provided');
     }
@@ -87,17 +110,14 @@ const MaidProfile: React.FC = () => {
       
       const res = await axios.post('/api/reviews', reviewData);
 
-      // Manually create the new review object to add user information
       const newReview = {
-        user_name: `${user.fname} ${user.lname}`,  // Add user_name manually
+        user_name: `${user.fname} ${user.lname}`,
         rating: starRating,
         text: reviewText,
       };
 
-      // Update the reviews state with the new review
       setReviews((prevReviews) => [...prevReviews, newReview]);
 
-      // Clear the form
       setReviewText('');
       setStarRating(5);
     } catch (err) {
@@ -113,7 +133,7 @@ const MaidProfile: React.FC = () => {
           <section className="flex items-start mb-8">
             <div className="w-40 h-40 mr-8">
               <img
-                src="/default-profile.png"
+                src="./maid_imgs/person.jpg"
                 alt={`${fname} ${lname}`}
                 className="w-full h-full rounded-full object-cover"
               />
@@ -133,12 +153,18 @@ const MaidProfile: React.FC = () => {
                   Contact {fname}
                 </button>
               </div>
+              
+              {/* Price Section */}
+              <div className="mt-4">
+                <h3 className="text-xl font-semibold mb-2">Pricing Information:</h3>
+                <p><strong>Price Full:</strong> ${pf}</p>
+                <p><strong>Price Partial:</strong> ${pp}</p>
+                <p><strong>Price Single:</strong> ${ps}</p>
+              </div>
             </div>
           </section>
 
-          {/* Main content container - reviews on the left, form on the right */}
           <div className="flex justify-between">
-            {/* Reviews Section */}
             <section className="w-[40vw] mb-8">
               <h2 className="text-2xl font-bold mb-4">Reviews</h2>
               <div className="space-y-4">
@@ -163,7 +189,6 @@ const MaidProfile: React.FC = () => {
               </div>
             </section>
 
-            {/* Review Form Section */}
             <section className="w-[40vw] mb-8">
               <h2 className="text-2xl font-bold mb-4">Leave a Review</h2>
               <form

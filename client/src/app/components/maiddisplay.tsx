@@ -13,8 +13,9 @@ interface Maid {
   location: string;
   phone_number: string;
   email: string;
-  services: string[];
-  prices: string[];
+  pf:number,
+  pp:number,
+  ps:number,
 }
 
 function MaidDisplay({ searchTerm }: MaidDisplayProps) {
@@ -48,7 +49,7 @@ function MaidDisplay({ searchTerm }: MaidDisplayProps) {
                   lname: maid.lname,
                   location: maid.location,
                   phone_number: maid.phone_number,
-                  email: maid.email
+                  email: maid.email,
                 }
               }}
             >
@@ -57,7 +58,7 @@ function MaidDisplay({ searchTerm }: MaidDisplayProps) {
               >
                 <div className="flex justify-center mb-4">
                   <img
-                    src="./maid_imgs/kwame.jpg"
+                    src="./maid_imgs/person.jpg"
                     alt={`${maid.fname} ${maid.lname}`}
                     className="w-24 h-24 rounded-full object-cover"
                   />

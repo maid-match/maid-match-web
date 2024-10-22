@@ -99,7 +99,7 @@ export async function getPrices(){
 }
 
 export async function getPrice(maid){
-    const [result] = await pool.query('select * from prices inner join maids on prices.maid_id = maids.id where maids.fname = ?',[maid])
+    const [result] = await pool.query('select * from prices where maid_id = ?',[maid])
     return result
 }
 

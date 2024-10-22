@@ -2,8 +2,9 @@
 import React, { FC, useState } from 'react';
 import Navbar from '../components/navbar';
 import axios from 'axios';
-
+import { useAuth } from '../contexts/AuthContext';
 const SignUp: FC = () => {
+  const {signup} = useAuth();
   const [fname, setFname] = useState('');
   const [lname, setLname] = useState('');
   const [email, setEmail] = useState('');
@@ -11,19 +12,7 @@ const SignUp: FC = () => {
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post('/api/users', {
-        fname,
-        lname,
-        email,
-        location,
-        password
-      });
-      console.log('Response:', data);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    }
+    await signup({fname,lname,location,email,password});
   };
 
   return (
