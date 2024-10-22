@@ -112,7 +112,7 @@ export async function getReview(id){
     return result
 }
 export async function getMaidReviews(maid){
-    const [result] = await pool.query('select * from reviews inner join maids on reviews.maid_id = maids.id inner join users on reviews.user_id = users.id where maids.fname = ?',[maid])
+    const [result] = await pool.query('select * from reviews where maid_id = ?',[maid])
     return result
 }
 export async function addReview(maidId,userId,text,rating){

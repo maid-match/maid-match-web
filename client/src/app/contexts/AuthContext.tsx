@@ -1,6 +1,8 @@
-"use client"
+"use client" // Ensure client-side rendering
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 interface User {
   id: string;
@@ -22,6 +24,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const router = useRouter(); // Now this will work correctly on the client side
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -46,6 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', data.token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+        router.push('/search'); // Use router.push for client-side navigation
       } else {
         throw new Error(data.message || "Login failed");
       }
